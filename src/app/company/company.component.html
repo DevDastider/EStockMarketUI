@@ -1,0 +1,154 @@
+<div class="bgd-cover" style="background-image: url('assets/images/homepage.png') !important; min-height: 535px;">
+    <!--Registration Form-->
+    <div>
+        <mat-expansion-panel class="register-form">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Register a Company
+                </mat-panel-title>
+                <mat-panel-description>
+                    Register a new Company
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <form class="example-form" #registerForm="ngForm">
+                <div class="company-code">             
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company Code</mat-label>
+                        <mat-hint>Unique Company Code is required</mat-hint>
+                        <input 
+                        #companyCode="ngModel" 
+                        [(ngModel)]="companyModel.companyCode" 
+                        matInput 
+                        name="companyCode"
+                        type="number"
+                        required 
+                        placeholder="Company Code">
+                        <mat-error
+                            *ngIf="!companyCode.valid && companyCode.touched && companyCode.errors && companyCode.errors['required']">
+                            Company Code is <strong>required.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <hr>
+
+                <div class="company-name">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company Name</mat-label>
+                        <input #companyName="ngModel" name="companyName" type="text" placeholder="Name of Company" matInput
+                            [(ngModel)]="companyModel.companyName" required>
+                        <mat-error
+                            *ngIf="!companyName.valid && companyName.touched && companyName.errors && companyName.errors['required']">
+                            Company Name is <strong>required.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <hr>
+
+                <div class="company-ceo">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company CEO</mat-label>
+                        <input #companyCeo="ngModel" matInput name="companyCeo" type="text" placeholder="CEO of Company"
+                            [(ngModel)]="companyModel.companyCeo" required>
+                        <mat-error
+                            *ngIf="!companyCeo.valid && companyCeo.touched && companyCeo.errors && companyCeo.errors['required']">
+                            Company CEO Name is <strong>required.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <hr>
+                <div class="company-turnover">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company Turnover</mat-label>
+                        <mat-hint>Company Turnover should be greater than INR. 100000000</mat-hint>
+                        <input #turnover="ngModel" matInput name="companyTurnover" type="number"
+                            placeholder=" Turnover of Company" [(ngModel)]="companyModel.companyTurnover" required>
+                        <span matPrefix>INR. </span>
+                        <mat-error *ngIf="!turnover.pristine && !turnover.valid && turnover.errors && turnover.errors['required']">Company Turnover is <strong>required.</strong>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <hr>
+
+                <div class="company-website">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Company Website</mat-label>
+                        <input matInput name="companyWebsite" type="text" placeholder="Website of Company(optional)"
+                            [(ngModel)]="companyModel.companyWebsite">
+                    </mat-form-field>
+                </div>
+                <hr>
+                
+                <div class="stock-exchange">
+                    <mat-radio-group #stockExchange="ngModel" aria-label="Select an option" name="stockExchange" required [(ngModel)]="companyModel.stockExchange" >
+                        <mat-label>Stock Exchange&nbsp;&nbsp;</mat-label>
+                        <mat-radio-button value="NSE">NSE</mat-radio-button>
+                        <mat-radio-button value="BSE">BSE</mat-radio-button>
+                        <mat-error *ngIf="!stockExchange.valid && stockExchange.errors && stockExchange.errors['required']">
+                            Select any one exchange
+                        </mat-error>
+                    </mat-radio-group>
+                </div>
+
+                <mat-action-row>
+                    <div class="container-fluid padding">
+                        <div class="row">
+                            <div class="col-md-2" style="margin-left: 40px;">
+                                <button [disabled]= '!registerForm.valid' 
+                                    type="button" 
+                                    mat-raised-button 
+                                    class="btn btn-primary" 
+                                    (click)="registerCompany(registerForm)">
+                                    Register the company
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-action-row> 
+            </form>
+        </mat-expansion-panel>
+    </div>
+    <hr>
+
+    <mat-spinner *ngIf="isLoading" mode="indeterminate" style="margin:0 auto;"></mat-spinner>
+    <!--All companies list will be shown-->
+    <div *ngIf="!isLoading" class="table-responsive">
+        <table matSort (matSortChange)="sortData($event)" class="table table-bordered table-condensed table-hover table-list">
+            <!--<populating the registered companies here-->
+            <div class="table-responsive">
+                <thead>
+                    <tr>
+                        <th mat-sort-header="companycode">Company Code</th>
+                        <th mat-sort-header="companyname">Company Name</th>
+                        <th mat-sort-header="stockprice">Stock Price</th>
+                        <th>More Options</th>
+                    </tr>
+                </thead>
+            </div>
+            <tbody>
+                <tr *ngFor="let c of companyArr">
+                    <td><a routerLink="/company/{{c.companyCode}}">{{c.companyCode}}</a></td>
+                    <td>{{c.companyName}}</td>
+                    <td *ngIf="c.stockPrice!=0">{{c.stockPrice}}</td>
+                    <td *ngIf="c.stockPrice==0">Not Listed</td>
+                    <td>
+                        <button [disabled]="!(c.stockPrice==0)" class="btn btn-success" label="List Company"
+                            (click)="addStockDialog(c.companyCode, c.companyName)">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button [disabled]="c.stockPrice==0" class="btn btn-primary"
+                            (click)="updateDialog(c.companyCode, c.companyName, c.stockPrice)">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        &nbsp;&nbsp;
+                        <button class="btn btn-danger" (click)="deleteCompany(c)">
+                            <i class="fa fa-trash" ></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

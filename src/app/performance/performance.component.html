@@ -1,0 +1,106 @@
+<mat-spinner *ngIf="isLoading" mode="indeterminate" style="margin:0 auto;"></mat-spinner>
+<div
+    style="background-image: url('assets/images/performance.png') !important; background-size: cover; min-height: 535px;">
+    <div *ngIf="!isLoading" class="table-responsive">
+        <table class="perfo">
+            <tbody>
+                <tr>
+                    <td>
+                        <mat-card class="higher-company-card">
+                            <mat-card-title>Stock trading at highest price today</mat-card-title>
+                            <mat-card-content>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Company Code</td>
+                                            <td><a routerLink="/company/{{max.companyCode}}">{{max.companyCode}}</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company Name</td>
+                                            <td>{{max.companyName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Stock Price</td>
+                                            <td>{{max.stockPrice}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </td>
+                    <td>
+                        <mat-card class="lower-company-card">
+                            <mat-card-title>Stock trading at lowest price today</mat-card-title>
+                            <mat-card-content>
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>Company Code</td>
+                                            <td><a routerLink="/company/{{min.companyCode}}">{{min.companyCode}}</a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company Name</td>
+                                            <td>{{min.companyName}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Stock Price</td>
+                                            <td>{{min.stockPrice}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </mat-card-content>
+                        </mat-card>
+                    </td>
+                </tr>
+                <tr>
+                    <h1 style="margin-top: 0.5em; font-family: 'Gill Sans';">Filter Companies by Registration Date</h1>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="input-group">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Start Date</mat-label>
+                                <input matInput [matDatepicker]="startDate" [max]="maxDate"
+                                    (dateInput)="addStartDate($event)">
+                                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                <mat-datepicker #startDate></mat-datepicker>
+                            </mat-form-field>
+                            &nbsp;&nbsp;
+                            <mat-form-field appearance="fill">
+                                <mat-label>End Date</mat-label>
+                                <input matInput [matDatepicker]="endDate" [max]="maxDate"
+                                    (dateInput)="addEndDate($event)">
+                                <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                                <mat-datepicker #endDate></mat-datepicker>
+                            </mat-form-field>
+                            &nbsp;&nbsp;
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" (click)="filter()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <mat-card class="filtered-companies">
+        <table *ngIf="filteredTable.length!=0" class="table table-bordered table-hover filteredTab">
+            <thead>
+                <th>Company Code</th>
+                <th>Company Name</th>
+                <th>Date Created</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of filteredTable">
+                    <td><a routerLink="/company/{{max.companyCode}}">{{c.companyCode}}</a></td>
+                    <td>{{c.companyName}}</td>
+                    <td>{{c.timeStamp}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card>
+</div>

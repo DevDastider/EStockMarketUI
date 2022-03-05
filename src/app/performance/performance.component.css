@@ -1,0 +1,60 @@
+.higher-company-card {
+  max-width: 420px;
+  margin-left: 5em;
+  margin-top: 2em;
+  background-color:blanchedalmond;
+}
+
+.lower-company-card {
+  max-width: 420px;
+  margin-left: 5em;
+  margin-top: 2em;
+  background-color:blanchedalmond;
+}
+
+.perfo{
+  margin-left: 2em;
+  margin-right: 2em;
+  width: auto;
+}
+
+.example-events {
+  height: 200px;
+  border: 1px solid #555;
+  overflow: auto;
+}
+
+.filteredTab th, .filteredTab tr, .filteredTab td{
+  text-align: center;
+}
+
+.filteredTab tbody{
+  height:150px;
+  display: block;
+  overflow-y: scroll;
+  background-color:  rgba(255, 219, 255, 0.822);
+}
+.filteredTab{
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-bottom: 2em;
+  border-color: black;
+  width: auto;
+}
+
+.filteredTab tbody::-webkit-scrollbar{
+  display: none;
+}
+
+.filteredTab thead, .filteredTab tbody tr {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+thead{
+  background-color: rgba(255, 219, 255, 0.473);
+}
+.filtered-companies{
+  margin-top: 2em;
+  background-color: rgba(217, 184, 243, 0.219);
+}

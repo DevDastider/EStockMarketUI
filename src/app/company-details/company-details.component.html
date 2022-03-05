@@ -1,0 +1,118 @@
+<mat-spinner *ngIf="isLoading" mode="indeterminate" style="margin:0 auto;"></mat-spinner>
+<div *ngIf="!flag && !isLoading">
+    <h1>No Company exists with code: {{searchCode}}</h1>
+</div>
+<h1 *ngIf="flag && !isLoading">Searched Company Details</h1>
+<div
+    style="background-image: url('assets/images/companypage.png') !important; background-size: cover; min-height: 500px;">
+    <div class="table-responsive">
+        <table *ngIf="flag && !isLoading" class="table table-bordered stock-table">
+            <tbody>
+                <tr>
+                    <td class="bold">Company Code</td>
+                    <td>{{searchCompanyModel.companyCode}}</td>
+                    <td class="bold">Company Turnover</td>
+                    <td>INR. {{searchCompanyModel.companyTurnover}}</td>
+                </tr>
+                <tr>
+                    <td class="bold">Company Name</td>
+                    <td>{{searchCompanyModel.companyName}}</td>
+                    <td class="bold">Stock Exchange</td>
+                    <td>{{searchCompanyModel.stockExchange}}</td>
+                </tr>
+                <tr>
+                    <td class="bold">Company CEO</td>
+                    <td>{{searchCompanyModel.companyCeo}}</td>
+                    <td class="bold">Current Stock Price</td>
+                    <td>{{searchCompanyModel.stockPrice}}</td>
+                </tr>
+                <tr>
+                    <td class="bold">Company Website</td>
+                    <td><a href="https://{{searchCompanyModel.companyWebsite}}">{{searchCompanyModel.companyWebsite}}</a></td>
+                    <td class="bold">Registration Date</td>
+                    <td>{{searchCompanyModel.timeStamp.substring(0,11)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div class="table-responsive">
+        <table *ngIf="flag && !isLoading">
+            <mat-card class="date-table">
+                <tbody>
+                    <tr>
+                        <h1 style="font-family: 'Gill Sans'; ">Choose date range to see Stock Transactions of
+                            {{searchCompanyModel.companyName}}</h1>
+                    </tr>
+                    <tr>
+                        <td>
+
+                            <div class="input-group" style="margin-left: 0.5em">
+                                From
+                                <mat-form-field appearance="fill">
+                                    <mat-label>Start Date</mat-label>
+                                    <input matInput [matDatepicker]="startDate" [max]="maxDate"
+                                        (dateInput)="addStartDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #startDate></mat-datepicker>
+                                </mat-form-field>
+                                &nbsp;&nbsp;
+                                To
+                                <mat-form-field appearance="fill">
+                                    <mat-label>End Date</mat-label>
+                                    <input matInput [matDatepicker]="endDate" [max]="maxDate"
+                                        (dateInput)="addEndDate($event)">
+                                    <mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+                                    <mat-datepicker #endDate></mat-datepicker>
+                                </mat-form-field>
+                                &nbsp;&nbsp;
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" (click)="filterSP()">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td>
+                            <table *ngIf="filteredTable.length!=0" class="max-min">
+                                <tbody style="font-size: larger;">
+                                    <tr>
+                                        <td class="bold">Max</td>
+                                        <td>{{maxStockPrice}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold">Min</td>
+                                        <td>{{minStockPrice}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bold">Avg</td>
+                                        <td>{{avgStockPrice}} </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </mat-card>
+        </table>
+    </div>
+    <table *ngIf="flag && filteredTable.length!=0" class="table table-bordered stock-table">
+        <thead>
+            <tr>
+                <th>Stock Price</th>
+                <th>Date</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let s of filteredTable">
+                <td>{{s.stockPrice}} </td>
+                <td>{{s.timeStamp.substring(0,11)}} </td>
+                <td>{{s.timeStamp.substring(11)}} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>
