@@ -7,7 +7,7 @@
                     Register a Company
                 </mat-panel-title>
                 <mat-panel-description>
-                    Register a new Company
+                    To Register a new Company, click here
                 </mat-panel-description>
             </mat-expansion-panel-header>
             
@@ -74,8 +74,12 @@
                 <div class="company-website">
                     <mat-form-field class="example-full-width" appearance="outline">
                         <mat-label>Company Website</mat-label>
-                        <input matInput name="companyWebsite" type="text" placeholder="Website of Company(optional)"
-                            [(ngModel)]="companyModel.companyWebsite">
+                        <input #companyWebsite="ngModel" matInput name="companyWebsite" type="text" placeholder="Website of Company"
+                            [(ngModel)]="companyModel.companyWebsite" required>
+                        <mat-error
+                            *ngIf="!companyWebsite.valid && companyWebsite.touched && companyWebsite.errors && companyWebsite.errors['required']">
+                            Company Website is <strong>required.</strong>
+                        </mat-error>
                     </mat-form-field>
                 </div>
                 <hr>
@@ -130,7 +134,7 @@
                 <tr *ngFor="let c of companyArr">
                     <td><a routerLink="/company/{{c.companyCode}}">{{c.companyCode}}</a></td>
                     <td>{{c.companyName}}</td>
-                    <td *ngIf="c.stockPrice!=0">{{c.stockPrice}}</td>
+                    <td *ngIf="c.stockPrice!=0">{{c.stockPrice | currency:'INR'}}</td>
                     <td *ngIf="c.stockPrice==0">Not Listed</td>
                     <td>
                         <button [disabled]="!(c.stockPrice==0)" class="btn btn-success" label="List Company"

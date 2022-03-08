@@ -12,7 +12,7 @@
                     <td class="bold">Company Code</td>
                     <td>{{searchCompanyModel.companyCode}}</td>
                     <td class="bold">Company Turnover</td>
-                    <td>INR. {{searchCompanyModel.companyTurnover}}</td>
+                    <td>{{searchCompanyModel.companyTurnover | currency:'INR'}}</td>
                 </tr>
                 <tr>
                     <td class="bold">Company Name</td>
@@ -24,7 +24,7 @@
                     <td class="bold">Company CEO</td>
                     <td>{{searchCompanyModel.companyCeo}}</td>
                     <td class="bold">Current Stock Price</td>
-                    <td>{{searchCompanyModel.stockPrice}}</td>
+                    <td>{{searchCompanyModel.stockPrice | currency:'INR'}}</td>
                 </tr>
                 <tr>
                     <td class="bold">Company Website</td>
@@ -80,15 +80,15 @@
                                 <tbody style="font-size: larger;">
                                     <tr>
                                         <td class="bold">Max</td>
-                                        <td>{{maxStockPrice}} </td>
+                                        <td>{{maxStockPrice | currency:'INR'}} </td>
                                     </tr>
                                     <tr>
                                         <td class="bold">Min</td>
-                                        <td>{{minStockPrice}} </td>
+                                        <td>{{minStockPrice | currency:'INR'}} </td>
                                     </tr>
                                     <tr>
                                         <td class="bold">Avg</td>
-                                        <td>{{avgStockPrice}} </td>
+                                        <td>{{avgStockPrice | currency:'INR'}} </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -108,7 +108,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let s of filteredTable">
-                <td>{{s.stockPrice}} </td>
+                <td>{{s.stockPrice | currency:'INR'}} </td>
                 <td>{{s.timeStamp.substring(0,11)}} </td>
                 <td>{{s.timeStamp.substring(11)}} </td>
             </tr>

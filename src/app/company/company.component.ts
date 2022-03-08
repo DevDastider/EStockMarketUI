@@ -33,13 +33,15 @@ export class CompanyComponent implements OnInit {
   }
 
   registerCompany(registerForm: NgForm){
-    //const copyCompany: Company= Object.assign({}, this.companyModel);
+    this.isLoading= true;
     this.companyService.addCompany(this.companyModel).subscribe(
       data=> {
+        this.isLoading= false;
         const companyData= Object.values(data)['0'];
         this.companyArr.push(companyData);
       },
       error=>{
+        this.isLoading= false;
         console.log(error);
         const e= error['error'];
         console.log(e['message']);
@@ -109,12 +111,16 @@ export class CompanyComponent implements OnInit {
     this.isLoading= true;
     this.companyService.addStockPrice(companyCode, obj).subscribe(
       data=> {
-        console.log(data);
-        this.getCompanies();
+        this.isLoading=false;
+        //console.log(data);
+        let c: Company= this.companyArr.filter(x => x.companyCode == companyCode)[0];
+        c.stockPrice= stockPrice;
+        
+        //this.getCompanies();
       },
       error=> {
         console.log(error);
-        this.dialog.open(ErrorDialogComponent, {data: { errorBody:'INTERNAL_SERVER_ERROR<br>Please try after sometime'}} );
+        this.dialog.open(ErrorDialogComponent, {data: { errorBody:'INTERNAL_SERVER_ERROR Please try after sometime'}} );
       }
     );
   }
@@ -136,14 +142,18 @@ export class CompanyComponent implements OnInit {
   }
 
   updatePrice(companyCode: number, stockPrice: number){
+    this.isLoading= true;
     let obj = new Company();
     obj.stockPrice= stockPrice;
     this.isLoading= true;
     this.companyService.updateStockPrice(companyCode, obj).subscribe(
       data=>{
         console.log(data);
-        this.getCompanies();
-        this.isLoading= true;
+        //this.getCompanies();
+        this.isLoading=false;
+        let c: Company= this.companyArr.filter(x => x.companyCode == companyCode)[0];
+        c.stockPrice= stockPrice;
+        
       },
       error=> {
         console.log(error);  
