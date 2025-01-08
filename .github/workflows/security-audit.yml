@@ -7,17 +7,7 @@ on:
   pull_request:
     branches:
       - master
-  workflow_dispatch:  # Enables manual trigger with inputs
-    inputs:
-      branch:         # Dropdown input for branch selection
-        description: 'Select branch to run security audit'
-        required: true
-        default: 'master'  # Default branch
-        type: choice
-        options:
-          - master
-          - dev
-          - feature/resolveVulnerability
+  workflow_dispatch:  # Enables manual trigger
 
 jobs:
   audit:
@@ -26,8 +16,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.branch }}  # Use the selected branch
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -43,5 +31,5 @@ jobs:
       - name: Upload Audit Report
         uses: actions/upload-artifact@v3
         with:
-          name: npm-audit-report-${{ github.event.inputs.branch }}
+          name: npm-audit-report
           path: audit-report.json
